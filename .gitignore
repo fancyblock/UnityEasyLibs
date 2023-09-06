@@ -72,3 +72,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 UnityHybridLib/Library/
 UnityHybridLib/Temp/
+UnityHybridLib/obj/
+UnityHybridLib/Logs/
