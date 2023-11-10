@@ -16,7 +16,7 @@ public class AutoUiTool : EditorWindow
     /// <summary>
     /// 遍历关联Widget和对应的Panel
     /// </summary>
-    [MenuItem("MyGame/ConnectWidgets %#I")]
+    [MenuItem("CommonAutoUI/ConnectWidgets %#I")]
     private static void ConnectWidgets()
     {
         GameObject go = Selection.activeGameObject;

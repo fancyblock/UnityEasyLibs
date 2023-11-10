@@ -32,10 +32,8 @@ public class EasyScrollView : MonoBehaviour
     protected Dictionary<int, GameObject> m_itemDic = new Dictionary<int, GameObject>();
     protected List<int> m_currentPageIndeies = new List<int>();
 
-    protected bool m_createAll;
 
-
-    public void Load(int count, Action<int, GameObject> setFunc, bool createAll = false)
+    public void Load(int count, Action<int, GameObject> setFunc)
     {
         if (ON_ITEM_FILL != null)
         {
@@ -51,13 +49,12 @@ public class EasyScrollView : MonoBehaviour
 
         ON_ITEM_FILL += setFunc;
 
-        Load(count, createAll);
+        Load(count);
     }
 
-    public void Load(int count, bool createAll = false)
+    public void Load(int count)
     {
         m_itemCount = count;
-        m_createAll = createAll;
 
         int realCount = count / m_perItemCount + (count % m_perItemCount > 0 ? 1 : 0);
 
@@ -143,12 +140,13 @@ public class EasyScrollView : MonoBehaviour
     }
 
 
-    void Awake()
+    private void Awake()
     {
         m_scrollRect.onValueChanged.AddListener(onScrollChange);
     }
 
-    void Update() 
+    // Update is called once per frame
+    private void Update() 
     {
         refreshView();
     }

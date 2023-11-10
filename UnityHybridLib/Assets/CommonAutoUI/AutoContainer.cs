@@ -40,6 +40,7 @@ public class AutoContainer : MonoBehaviour, IAutoContainer
         set { m_allowVirtualWidget = value; }
     }
 
+
 #region SPECIAL_UTILS
 
     public void ConnectWidgets()

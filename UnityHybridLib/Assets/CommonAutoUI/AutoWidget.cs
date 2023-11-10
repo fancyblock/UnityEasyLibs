@@ -22,6 +22,9 @@ public class AutoWidget : MonoBehaviour , IAutoWidget
     private InputField m_inputField = null;
     private Action<string> m_inputFieldChangeEvent;
 
+    private TMP_InputField m_tmpInputField = null;
+    //TODO 
+
     private Dropdown m_dropDown = null;
     private Action<bool> m_toggleChangeEvent;
 
@@ -105,10 +108,20 @@ public class AutoWidget : MonoBehaviour , IAutoWidget
         if (m_label == null)
             m_labelTMP = GetComponent<TextMeshProUGUI>();
 
+        if (m_labelTMP == null)
+            m_inputField = GetComponent<InputField>();
+
+        if (m_labelTMP == null)
+            m_tmpInputField = GetComponent<TMP_InputField>();
+
         if (m_label != null)
             return m_label.text;
         else if(m_labelTMP != null)
             return m_labelTMP.text;
+        else if(m_inputField != null)
+            return m_inputField.text;
+        else if(m_tmpInputField != null)
+            return m_tmpInputField.text;
 
         return "";
     }
@@ -313,8 +326,20 @@ public class AutoWidget : MonoBehaviour , IAutoWidget
         if (m_inputField == null)
         {
             m_inputField = GetComponent<InputField>();
+        }
+
+        if (m_inputField == null && m_tmpInputField == null)
+            m_tmpInputField = GetComponent<TMP_InputField>();
+
+        if(m_inputField != null)
+        {
             m_inputField.onEndEdit.RemoveAllListeners();
             m_inputField.onEndEdit.AddListener(onInputFieldChange);
+        }
+        else if(m_tmpInputField != null)
+        {
+            m_tmpInputField.onEndEdit.RemoveAllListeners();
+            m_tmpInputField.onEndEdit.AddListener(onInputFieldChange);
         }
 
         m_inputFieldChangeEvent = onFieldChange;
@@ -399,21 +424,29 @@ public class AutoWidget : MonoBehaviour , IAutoWidget
     public void SetInputFieldVal(string val)
     {
         if (m_inputField == null)
-        {
             m_inputField = GetComponent<InputField>();
-        }
 
-        m_inputField.text = val;
+        if (m_inputField == null && m_labelTMP == null)
+            m_tmpInputField = GetComponent<TMP_InputField>();
+
+        if(m_inputField != null)
+            m_inputField.text = val;
+        else if(m_tmpInputField != null)
+            m_tmpInputField.text = val;
     }
 
     public string GetInputFieldVal()
     {
         if (m_inputField == null)
-        {
             m_inputField = GetComponent<InputField>();
-        }
 
-        return m_inputField.text;
+        if (m_inputField != null)
+            return m_inputField.text;
+
+        if (m_tmpInputField == null)
+            m_tmpInputField = GetComponent<TMP_InputField>();
+
+        return m_tmpInputField.text;
     }
 
     public Color GetTextColor()
