@@ -64,4 +64,37 @@ public class GameToolsMenu
         Debug.Log("convert done.");
     }
 
+    [MenuItem("MyGame/Export Source Code")]
+    static public void ExportAllSourceCode()
+    {
+        Debug.Log("Export all the source code.");
+
+        string[] fileList = AssetDatabase.FindAssets("t:Object", new string[] { "Assets/Script" });
+
+        int count = 0;
+        StringBuilder sb = new StringBuilder();
+
+        foreach (string file in fileList)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(file);
+
+            if (path.EndsWith(".cs"))
+            {
+                string code = File.ReadAllText(path);
+
+                sb.Append(path);
+                sb.Append("\n\n");
+                sb.Append(code);
+                sb.Append("\n\n\n\n\n");
+
+                count++;
+            }
+        }
+
+        Debug.Log(count + " script files.");
+
+        // write the out 
+        File.WriteAllText("code.txt", sb.ToString());
+    }
+
 }
