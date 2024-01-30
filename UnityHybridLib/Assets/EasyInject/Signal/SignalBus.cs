@@ -44,13 +44,20 @@ public class SignalBus
             }
         }
 
-        Assert.IsFalse(alreadyExist, $"Subscribe {typeof(TSignal).Name} already exist.");
+        if(alreadyExist)
+        {
+            Debug.LogWarning($"Subscribe {typeof(TSignal).Name} already exist.");
+        }
+        else
+        {
+            CallerInfo ci = new CallerInfo();
+            ci.rawCallback = callback;
+            ci.callback = (obj) => callback.Invoke((TSignal)obj);
 
-        CallerInfo ci = new CallerInfo();
-        ci.rawCallback = callback;
-        ci.callback = (obj) => callback.Invoke((TSignal)obj);
+            m_caller[typeName].Add(ci);
+        }
 
-        m_caller[typeName].Add(ci);
+        // Assert.IsFalse(alreadyExist, $"Subscribe {typeof(TSignal).Name} already exist.");
     }
 
     /// <summary>
@@ -111,10 +118,11 @@ public class SignalBus
 
         if(m_caller.ContainsKey(typeName))
         {
-            foreach(var caller in m_caller[typeName])
-            {
+            var callers = new List<CallerInfo>();
+            callers.AddRange(m_caller[typeName]);
+
+            foreach(var caller in callers)
                 caller.callback.Invoke(signal);
-            }
         }
 
         if(m_command.ContainsKey(typeName))
