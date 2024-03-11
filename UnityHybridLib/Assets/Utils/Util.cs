@@ -46,6 +46,46 @@ public class Util
         }
     }
 
+    static public void SetColor(GameObject go, Color color)
+    {
+        Queue<GameObject> gameObjects = new Queue<GameObject>();
+
+        gameObjects.Enqueue(go);
+
+        while (gameObjects.Count > 0)
+        {
+            GameObject g = gameObjects.Dequeue();
+
+            SpriteRenderer sr = g.GetComponent<SpriteRenderer>();
+
+            if (sr != null)
+                sr.color = color;
+
+            for (int i = 0; i < g.transform.childCount; i++)
+                gameObjects.Enqueue(g.transform.GetChild(i).gameObject);
+        }
+    }
+
+    static public void SetAlpha(GameObject go, float alpha)
+    {
+        Queue<GameObject> gameObjects = new Queue<GameObject>();
+
+        gameObjects.Enqueue(go);
+
+        while (gameObjects.Count > 0)
+        {
+            GameObject g = gameObjects.Dequeue();
+
+            SpriteRenderer sr = g.GetComponent<SpriteRenderer>();
+
+            if (sr != null)
+                sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, alpha);
+
+            for (int i = 0; i < g.transform.childCount; i++)
+                gameObjects.Enqueue(g.transform.GetChild(i).gameObject);
+        }
+    }
+
     /// <summary>
     /// 生成一个唯一ID
     /// </summary>
@@ -141,20 +181,17 @@ public class Util
         int index = 0;
 
         int allweight = weights.Sum();
-
         int randNum = UnityEngine.Random.Range(0, allweight);
 
-        for(int i = 0; i < weights.Count; i++)
+        int segSum = 0;
+        for (int i = 0; i < weights.Count; i++)
         {
-            if(randNum <= weights[i])
-            {
-                index = i;
+            index = i;
+
+            if (randNum >= segSum && randNum < (segSum + weights[i]))
                 break;
-            }
-            else
-            {
-                randNum -= weights[i];
-            }
+
+            segSum += weights[i];
         }
 
         return index;
@@ -189,4 +226,10 @@ public class Util
         Cursor.SetCursor(tex, Vector2.zero, CursorMode.Auto);
     }
 
+    static public string SecondToTimeShow(float seconds)
+    {
+        TimeSpan ts = TimeSpan.FromSeconds(seconds);
+
+        return ts.ToString(@"mm\:ss");
+    }
 }
