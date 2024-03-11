@@ -319,6 +319,7 @@ public class AutoWidget : MonoBehaviour , IAutoWidget
             m_image = GetComponent<Image>();
 
         m_image.sprite = sprite;
+        m_image.SetNativeSize();
     }
 
     public void SetInputFieldChangeEvent(Action<string> onFieldChange)
