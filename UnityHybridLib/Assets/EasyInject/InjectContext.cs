@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Reflection;
 using System;
 
+
 namespace EasyInject
 {
 
@@ -56,6 +57,13 @@ namespace EasyInject
             m_bindingDatas.Add(data);
 
             return data;
+        }
+
+        public bool UnbindingData<T>(T obj)
+        {
+            //TODO 
+
+            return true;
         }
 
         public void Inject(object obj)

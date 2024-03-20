@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyInject;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -132,6 +133,7 @@ public class SignalBus
             BaseCmd command = Activator.CreateInstance(commandType) as BaseCmd;
 
             command.SIGNAL = signal;
+            InjectContext.Instance.Inject(command);
             command.Exec();
         }
     }
