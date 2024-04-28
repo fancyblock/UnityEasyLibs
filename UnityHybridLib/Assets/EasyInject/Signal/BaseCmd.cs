@@ -1,10 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using EasyInject;
 
 
 public class BaseCmd 
 {
+    [Inject] protected SignalBus m_bus;
+
+
     public object SIGNAL { get; set; }
 
     public virtual void Exec() { }

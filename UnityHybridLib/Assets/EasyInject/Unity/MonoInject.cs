@@ -13,7 +13,10 @@ namespace EasyInject
             MonoBehaviour[] mbs = gameObject.GetComponents<MonoBehaviour>();
 
             foreach (var mb in mbs)
-                InjectContext.Instance.Inject(mb);
+            {
+                if(mb != this)
+                    InjectContext.Instance.Inject(mb);
+            }
 
             if(m_injectChildren)
             {

@@ -59,7 +59,26 @@ namespace EasyInject
             return data;
         }
 
+        public BindingData Bind(Type t, object obj)
+        {
+            BindingData data = new BindingData();
+
+            data.SetKey(t);
+            data.SetInstValue(obj);
+
+            m_bindingDatas.Add(data);
+
+            return data;
+        }
+
         public bool UnbindingData<T>(T obj)
+        {
+            //TODO 
+
+            return true;
+        }
+
+        public bool UnbindingData(Type t, object obj)
         {
             //TODO 
 
