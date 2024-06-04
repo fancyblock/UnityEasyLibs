@@ -139,13 +139,20 @@ public class EasyScrollView : MonoBehaviour
         get { return m_itemContainer; }
     }
 
+    public List<GameObject> DISPLAYED_ITEMS
+    {
+        get
+        {
+            return m_itemDic.Values.ToList();
+        }
+    }
+
 
     private void Awake()
     {
         m_scrollRect.onValueChanged.AddListener(onScrollChange);
     }
 
-    // Update is called once per frame
     private void Update() 
     {
         refreshView();
