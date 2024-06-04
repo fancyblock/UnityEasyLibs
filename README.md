@@ -8,4 +8,7 @@ EasyInject
 
 2D帧动画组件
 
+Excel导表组件
+ExcelSetting
+
 Util等
