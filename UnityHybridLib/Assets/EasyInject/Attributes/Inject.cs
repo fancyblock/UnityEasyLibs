@@ -1,12 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-
-namespace EasyInject
+namespace EasyLibs
 {
-
     [AttributeUsage(AttributeTargets.Field)]
     public class Inject : System.Attribute
     {
@@ -20,9 +15,6 @@ namespace EasyInject
             Id = id;
         }
 
-
         public string Id { get; private set; }
-
     }
-
 }

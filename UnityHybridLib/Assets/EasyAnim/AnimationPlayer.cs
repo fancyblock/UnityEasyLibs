@@ -1,40 +1,40 @@
 ﻿using UnityEngine;
 
-
-public class AnimationPlayer : MonoBehaviour
+namespace EasyLibs
 {
-    public SpriteRenderer sprite;
-    public AnimClip animClip;
-
-    int m_curIndex;
-    float m_timer;
-
-
-    // Use this for initialization
-    void Start ()
+    public class AnimationPlayer : MonoBehaviour
     {
-        m_curIndex = 0;
-        m_timer = 0;
+        public SpriteRenderer sprite;
+        public AnimClip animClip;
 
-        sprite.sprite = animClip.m_frames[0];
-    }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        m_timer += Time.deltaTime;
+        int m_curIndex;
+        float m_timer;
 
-        if (m_timer >= animClip.m_interval)
+
+        void Start()
         {
-            m_curIndex++;
-            m_timer -= animClip.m_interval;
+            m_curIndex = 0;
+            m_timer = 0;
 
-            if (m_curIndex >= animClip.m_frames.Count)
+            sprite.sprite = animClip.m_frames[0];
+        }
+
+        void Update()
+        {
+            m_timer += Time.deltaTime;
+
+            if (m_timer >= animClip.m_interval)
             {
-                m_curIndex = 0;
-            }
+                m_curIndex++;
+                m_timer -= animClip.m_interval;
 
-            sprite.sprite = animClip.m_frames[m_curIndex];
+                if (m_curIndex >= animClip.m_frames.Count)
+                {
+                    m_curIndex = 0;
+                }
+
+                sprite.sprite = animClip.m_frames[m_curIndex];
+            }
         }
     }
 }

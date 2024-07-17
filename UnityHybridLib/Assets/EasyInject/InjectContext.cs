@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Reflection;
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 
-
-namespace EasyInject
+namespace EasyLibs
 {
-
     public class InjectContext
     {
         private static InjectContext m_instance = null;
@@ -135,7 +131,5 @@ namespace EasyInject
 
             return bd;
         }
-
     }
-
 }

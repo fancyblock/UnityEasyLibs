@@ -1,7 +1,6 @@
 using UnityEngine;
 
-
-namespace EasyInject
+namespace EasyLibs
 {
     public class MonoInject : MonoBehaviour
     {

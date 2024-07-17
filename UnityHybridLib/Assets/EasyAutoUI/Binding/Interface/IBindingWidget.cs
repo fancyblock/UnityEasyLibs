@@ -1,8 +1,10 @@
 
-
-public interface IBindingWidget 
+namespace EasyLibs
 {
-    void Bind(IBindingData bindingObject, string bindingField);
+    public interface IBindingWidget
+    {
+        void Bind(IBindingData bindingObject, string bindingField);
 
-    void Unbind();
+        void Unbind();
+    }
 }

@@ -1,25 +1,25 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System;
 
-
-[Serializable]
-public class BaseCfg 
+namespace EasyLibs
 {
-    public string id;
-
-
-    protected static List<string> parseArray(string origin)
+    [Serializable]
+    public class BaseCfg
     {
-        if (string.IsNullOrEmpty(origin))
-            return new List<string>();
+        public string id;
 
-        if(origin.Contains("|"))
+
+        protected static List<string> parseArray(string origin)
         {
-            return new List<string>(origin.Split("|"));
+            if (string.IsNullOrEmpty(origin))
+                return new List<string>();
+
+            if (origin.Contains("|"))
+            {
+                return new List<string>(origin.Split("|"));
+            }
+
+            return new List<string>() { origin };
         }
-
-        return new List<string>() { origin };
     }
-
 }

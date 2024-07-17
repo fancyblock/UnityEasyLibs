@@ -2,74 +2,76 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IAutoWidget 
+namespace EasyLibs
 {
-    bool IsVirtual();
+    public interface IAutoWidget
+    {
+        bool IsVirtual();
 
-    void SetEnable(bool enable);
+        void SetEnable(bool enable);
 
-    GameObject GetGameObj();
+        GameObject GetGameObj();
 
-    T Component<T>();
+        T Component<T>();
 
-    void SetValue(string text);
+        void SetValue(string text);
 
-    void SetValue(bool toggle);
+        void SetValue(bool toggle);
 
-    void SetValue(float progress);
+        void SetValue(float progress);
 
-    void SetValue(Sprite sprite);
+        void SetValue(Sprite sprite);
 
-    string GetValue();
+        string GetValue();
 
-    void SetButtonEvent(Action evt);
+        void SetButtonEvent(Action evt);
 
-    void SetButtonEvent(Action<string> evt);
+        void SetButtonEvent(Action<string> evt);
 
-    void SetTriggerEvent(Action evt);
+        void SetTriggerEvent(Action evt);
 
-    void SetButtonEnable(bool enable);
+        void SetButtonEnable(bool enable);
 
-    void SetImageFillAmount(float value);
+        void SetImageFillAmount(float value);
 
-    void SetTextColor(Color color);
+        void SetTextColor(Color color);
 
-    Color GetTextColor();
+        Color GetTextColor();
 
-    void SetRawImage(Texture2D texture);
+        void SetRawImage(Texture2D texture);
 
-    void SetImageColor(Color color);
+        void SetImageColor(Color color);
 
-    float GetImageFillAmount();
+        float GetImageFillAmount();
 
-    void PlayAnimation(string ani);
+        void PlayAnimation(string ani);
 
-    void SetMaskWidth(float width);
+        void SetMaskWidth(float width);
 
-    void SetInputFieldVal(string val);
+        void SetInputFieldVal(string val);
 
-    string GetInputFieldVal();
+        string GetInputFieldVal();
 
-    void SetInputFieldChangeEvent(Action<string> onFieldChange);
+        void SetInputFieldChangeEvent(Action<string> onFieldChange);
 
-    void SetToggleChangeEvent(Action<bool> onToggleChange);
+        void SetToggleChangeEvent(Action<bool> onToggleChange);
 
-    bool GetToggleValue();
+        bool GetToggleValue();
 
-    void SetToggleValue(bool isOn);
+        void SetToggleValue(bool isOn);
 
-    void SetToggleGroupEvent(Action<bool, string> onToggled);
+        void SetToggleGroupEvent(Action<bool, string> onToggled);
 
-    void SetDropListItems(List<string> items);
+        void SetDropListItems(List<string> items);
 
-    void SetRectSize(Vector2 size);
+        void SetRectSize(Vector2 size);
 
-    void ScrollLoad(int count, Action<int, GameObject> setFunc);
+        void ScrollLoad(int count, Action<int, GameObject> setFunc);
 
-    void SnapTo(int index);
+        void SnapTo(int index);
 
-    void ShowTab(int index);
+        void ShowTab(int index);
 
-    void ShowTab(string name);
-
+        void ShowTab(string name);
+    }
 }

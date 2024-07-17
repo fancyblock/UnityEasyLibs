@@ -1,32 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
 
-
-public abstract class Singleton<T> where T : Singleton<T>, new()
+namespace EasyLibs
 {
-    private static T instance;
-
-    public static T Instance
+    public abstract class Singleton<T> where T : Singleton<T>, new()
     {
-        get
+        private static T instance;
+
+        public static T Instance
         {
-            if (instance == null)
+            get
             {
-                instance = new T();
+                if (instance == null)
+                {
+                    instance = new T();
+                }
+                return instance;
             }
-            return instance;
         }
-    }
 
-    protected Singleton()
-    {
-        if (instance != null)
+        protected Singleton()
         {
-            throw new InvalidOperationException("Cannot create multiple instances of a Singleton.");
-        }
+            if (instance != null)
+            {
+                throw new InvalidOperationException("Cannot create multiple instances of a Singleton.");
+            }
 
-        instance = (T)this;
+            instance = (T)this;
+        }
     }
 }

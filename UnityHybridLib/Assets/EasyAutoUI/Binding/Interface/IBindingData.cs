@@ -1,14 +1,15 @@
 using System;
 
-
-public interface IBindingData 
+namespace EasyLibs
 {
-    event Action<string,object> ON_DATA_CHANGED;
+    public interface IBindingData
+    {
+        event Action<string, object> ON_DATA_CHANGED;
 
-    void SetField(string name, object val);
+        void SetField(string name, object val);
 
-    object GetField(string name);
+        object GetField(string name);
 
-    Type GetFieldType(string name);
-
+        Type GetFieldType(string name);
+    }
 }

@@ -1,9 +1,7 @@
 using System;
 
-
-namespace EasyInject
+namespace EasyLibs
 {
-
     public class BindingData 
     {
         private Type m_key;
@@ -101,5 +99,4 @@ namespace EasyInject
         single,
         transient,
     }
-
 }

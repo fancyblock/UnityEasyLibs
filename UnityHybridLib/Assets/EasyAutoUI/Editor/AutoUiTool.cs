@@ -2,89 +2,91 @@
 using UnityEditor;
 using UnityEngine;
 
-
-public class AutoUiTool : EditorWindow 
+namespace EasyLibs
 {
-    public static void ConnectWidgets( GameObject go )
+    public class AutoUiTool : EditorWindow
     {
-        Transform root = go.transform;
-
-        cleanPanel(root);
-        checkWidgets(root, true);
-    }
-
-    /// <summary>
-    /// 遍历关联Widget和对应的Panel
-    /// </summary>
-    [MenuItem("CommonAutoUI/ConnectWidgets %#I")]
-    private static void ConnectWidgets()
-    {
-        GameObject go = Selection.activeGameObject;
-
-        if (go == null)
-            return;
-
-        ConnectWidgets(go);
-    }
-
-
-    private static void cleanPanel(Transform node)
-    {
-        AutoContainer container = node.GetComponent<AutoContainer>();
-
-        if (container != null)
+        public static void ConnectWidgets(GameObject go)
         {
-            container.ClearWidgets();
+            Transform root = go.transform;
+
+            cleanPanel(root);
+            checkWidgets(root, true);
         }
 
-        for (int i = 0; i < node.childCount; i++)
+        /// <summary>
+        /// 遍历关联Widget和对应的Panel
+        /// </summary>
+        [MenuItem("EasyLibs/ConnectWidgets %#I")]
+        private static void ConnectWidgets()
         {
-            Transform child = node.GetChild(i);
-            cleanPanel(child);
-        }
-    }
+            GameObject go = Selection.activeGameObject;
 
-    private static void checkWidgets(Transform node, bool root)
-    {
-        if (!root)
-        {
-            AutoWidget widget = node.GetComponent<AutoWidget>();
+            if (go == null)
+                return;
 
-            if (widget != null)
-                matchWidget(widget);
+            ConnectWidgets(go);
         }
 
-        for (int i = 0; i < node.childCount; i++)
+
+        private static void cleanPanel(Transform node)
         {
-            Transform child = node.GetChild(i);
-            checkWidgets(child, false);
-        }
-    }
-
-    private static void matchWidget(AutoWidget widget)
-    {
-        bool matched = false;
-        Transform transform = widget.transform;
-
-        while (transform.parent != null)
-        {
-            transform = transform.parent;
-
-            AutoContainer container = transform.GetComponent<AutoContainer>();
+            AutoContainer container = node.GetComponent<AutoContainer>();
 
             if (container != null)
             {
-                container.AddWidget(widget.gameObject.name, widget);
+                container.ClearWidgets();
+            }
 
-                widget.m_parent = container;
-
-                matched = true;
-
-                break;
+            for (int i = 0; i < node.childCount; i++)
+            {
+                Transform child = node.GetChild(i);
+                cleanPanel(child);
             }
         }
 
-        if (!matched)
-            throw new Exception("Widget [" + widget.gameObject.name + "] can not find the match panel.");
+        private static void checkWidgets(Transform node, bool root)
+        {
+            if (!root)
+            {
+                AutoWidget widget = node.GetComponent<AutoWidget>();
+
+                if (widget != null)
+                    matchWidget(widget);
+            }
+
+            for (int i = 0; i < node.childCount; i++)
+            {
+                Transform child = node.GetChild(i);
+                checkWidgets(child, false);
+            }
+        }
+
+        private static void matchWidget(AutoWidget widget)
+        {
+            bool matched = false;
+            Transform transform = widget.transform;
+
+            while (transform.parent != null)
+            {
+                transform = transform.parent;
+
+                AutoContainer container = transform.GetComponent<AutoContainer>();
+
+                if (container != null)
+                {
+                    container.AddWidget(widget.gameObject.name, widget);
+
+                    widget.m_parent = container;
+
+                    matched = true;
+
+                    break;
+                }
+            }
+
+            if (!matched)
+                throw new Exception("Widget [" + widget.gameObject.name + "] can not find the match panel.");
+        }
     }
 }

@@ -1,21 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-
-[RequireComponent(typeof(Text))]
-public class TextBinding : BaseBindingWidget
+namespace EasyLibs
 {
-    private Text m_text;
-
-
-    // Start is called before the first frame update
-    void Awake()
+    [RequireComponent(typeof(Text))]
+    public class TextBinding : BaseBindingWidget
     {
-        m_text = GetComponent<Text>();
-    }
+        private Text m_text;
 
-    protected override void onDataChange(object val) 
-    {
-        m_text.text = val.ToString();
+
+        void Awake()
+        {
+            m_text = GetComponent<Text>();
+        }
+
+        protected override void onDataChange(object val)
+        {
+            m_text.text = val.ToString();
+        }
     }
 }

@@ -3,44 +3,46 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-
-[CustomEditor(typeof(AutoContainer))]
-public class AutoContainerEditor : Editor
+namespace EasyLibs
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(AutoContainer))]
+    public class AutoContainerEditor : Editor
     {
-        AutoContainer ac = target as AutoContainer;
-        List<string> widgets = ac.WIDGET_NAMES;
+        public override void OnInspectorGUI()
+        {
+            AutoContainer ac = target as AutoContainer;
+            List<string> widgets = ac.WIDGET_NAMES;
 
-        if (widgets == null || widgets.Count == 0)
-        {
-            EditorGUILayout.HelpBox("No widgets", MessageType.Warning);
-        }
-        else
-        {
-            for(int i = 0; i < widgets.Count; i++)
+            if (widgets == null || widgets.Count == 0)
             {
-                string widgetName = widgets[i];
-
-                if (widgets.Count(w => w == widgetName) > 1)
-                    EditorGUILayout.ObjectField(ac.WIDGETS[i], typeof(AutoWidget));
-                else
-                    EditorGUILayout.LabelField(widgetName);
+                EditorGUILayout.HelpBox("No widgets", MessageType.Warning);
             }
-        }
+            else
+            {
+                for (int i = 0; i < widgets.Count; i++)
+                {
+                    string widgetName = widgets[i];
 
-        EditorGUILayout.Space();
+                    if (widgets.Count(w => w == widgetName) > 1)
+                        EditorGUILayout.ObjectField(ac.WIDGETS[i], typeof(AutoWidget));
+                    else
+                        EditorGUILayout.LabelField(widgetName);
+                }
+            }
 
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.PrefixLabel("Allow VirtualWidget");
-        ac.ALLOW_VIRTUAL_WIDGET = EditorGUILayout.Toggle(ac.ALLOW_VIRTUAL_WIDGET);
-        EditorGUILayout.EndHorizontal();
+            EditorGUILayout.Space();
 
-        EditorGUILayout.Space();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Allow VirtualWidget");
+            ac.ALLOW_VIRTUAL_WIDGET = EditorGUILayout.Toggle(ac.ALLOW_VIRTUAL_WIDGET);
+            EditorGUILayout.EndHorizontal();
 
-        if(GUILayout.Button("ConnectWidgets"))
-        {
-            AutoUiTool.ConnectWidgets(ac.gameObject);
+            EditorGUILayout.Space();
+
+            if (GUILayout.Button("ConnectWidgets"))
+            {
+                AutoUiTool.ConnectWidgets(ac.gameObject);
+            }
         }
     }
 }

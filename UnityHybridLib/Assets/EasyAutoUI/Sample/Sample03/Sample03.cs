@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EasyLibs;
+
 
 public class Sample03 : MonoBehaviour
 {

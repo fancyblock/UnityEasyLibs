@@ -1,17 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using UnityEngine;
 
-
-namespace EasyInject
+namespace EasyLibs
 {
-
     [Serializable]
     public class MonoBindingInfo
     {
         public MonoBehaviour m_monobehaviour;
         public string m_id;
     }
-
 }

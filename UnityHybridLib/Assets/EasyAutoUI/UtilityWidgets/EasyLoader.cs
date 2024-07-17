@@ -1,31 +1,32 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-
-public class EasyLoader : MonoBehaviour
+namespace EasyLibs
 {
-    [SerializeField] protected GameObject m_itemPrefab;
-    [SerializeField] protected RectTransform m_itemContainer;
-
-    private List<GameObject> m_itemGos = new List<GameObject>();
-
-
-    public void Load(int count, Action<int, GameObject> setFunc)
+    public class EasyLoader : MonoBehaviour
     {
-        foreach(GameObject go in m_itemGos)
-            Destroy(go);
+        [SerializeField] protected GameObject m_itemPrefab;
+        [SerializeField] protected RectTransform m_itemContainer;
 
-        m_itemGos.Clear();
+        private List<GameObject> m_itemGos = new List<GameObject>();
 
-        for(int i = 0; i < count; i++)
+
+        public void Load(int count, Action<int, GameObject> setFunc)
         {
-            GameObject go = Instantiate(m_itemPrefab, m_itemContainer);
-            go.transform.localScale = Vector3.one;
+            foreach (GameObject go in m_itemGos)
+                Destroy(go);
 
-            setFunc?.Invoke(i, go);
-            m_itemGos.Add(go);
+            m_itemGos.Clear();
+
+            for (int i = 0; i < count; i++)
+            {
+                GameObject go = Instantiate(m_itemPrefab, m_itemContainer);
+                go.transform.localScale = Vector3.one;
+
+                setFunc?.Invoke(i, go);
+                m_itemGos.Add(go);
+            }
         }
     }
 }

@@ -1,10 +1,8 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-
-namespace EasyInject
+namespace EasyLibs
 {
     public class ComponentInject : MonoBehaviour
     {
@@ -12,7 +10,6 @@ namespace EasyInject
         //TODO 
 
 
-        // Start is called before the first frame update
         void Awake()
         {
             foreach(Component com in m_components)
@@ -27,7 +24,5 @@ namespace EasyInject
                 }
             }
         }
-
     }
-
 }

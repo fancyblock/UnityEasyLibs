@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-namespace EasyInject
+namespace EasyLibs
 {
     public class MonoBinding : MonoBehaviour
     {
