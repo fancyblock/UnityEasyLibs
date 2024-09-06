@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -145,6 +146,27 @@ namespace EasyLibs
             get
             {
                 return m_itemDic.Values.ToList();
+            }
+        }
+
+        public void AddOneItem()
+        {
+            m_itemCount++;
+            refreshView();
+        }
+
+        public void Roll2Last()
+        {
+            StartCoroutine(rolling2last());
+
+            IEnumerator rolling2last()
+            {
+                yield return null;
+
+                if (m_direction == Dir.vertical)
+                    m_scrollRect.verticalNormalizedPosition = 0f;
+                else
+                    m_scrollRect.horizontalNormalizedPosition = 0f;
             }
         }
 

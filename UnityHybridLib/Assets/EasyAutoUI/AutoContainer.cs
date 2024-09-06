@@ -232,6 +232,16 @@ namespace EasyLibs
             GetWidget(widgetName).SetValue(progress);
         }
 
+        public void SetInputFieldValue(string widgetName, string text)
+        {
+            GetWidget(widgetName).SetInputFieldVal(text);
+        }
+
+        public string GetInputFieldValue(string widgetName)
+        {
+            return GetWidget(widgetName).GetInputFieldVal();
+        }
+
         public void SetButtonEvent(string widgetName, Action evt)
         {
             GetWidget(widgetName).SetButtonEvent(evt);

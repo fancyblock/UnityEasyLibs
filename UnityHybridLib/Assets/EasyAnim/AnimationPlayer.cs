@@ -7,8 +7,8 @@ namespace EasyLibs
         public SpriteRenderer sprite;
         public AnimClip animClip;
 
-        int m_curIndex;
-        float m_timer;
+        private int m_curIndex;
+        private float m_timer;
 
 
         void Start()

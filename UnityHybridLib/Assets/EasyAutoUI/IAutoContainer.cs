@@ -21,6 +21,8 @@ namespace EasyLibs
         void SetValue(string widgetName, string text);
         void SetValue(string widgetName, bool toggle);
         void SetValue(string widgetName, float progress);
+        void SetInputFieldValue(string widgetName, string text);
+        string GetInputFieldValue(string widgetName);
         void SetButtonEvent(string widgetName, Action evt);
         void SetButtonEnable(string widgetName, bool enable);
         void SetImageFillAmount(string widgetName, float value);

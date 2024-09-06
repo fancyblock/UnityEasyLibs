@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EasyLibs
@@ -19,10 +20,23 @@ namespace EasyLibs
 
             if(m_injectChildren)
             {
-                var cmbs = gameObject.GetComponentsInChildren<MonoBehaviour>();
+                Queue<Transform> queue = new Queue<Transform>();
+                queue.Enqueue(transform);
 
-                foreach (var cmb in cmbs)
-                    InjectContext.Instance.Inject(cmb);
+                while (queue.Count > 0)
+                {
+                    Transform t = queue.Dequeue();
+
+                    foreach (Transform child in t)
+                    {
+                        MonoBehaviour[] cmbs = child.GetComponents<MonoBehaviour>();
+
+                        foreach (var cmb in cmbs)
+                            InjectContext.Instance.Inject(cmb);
+
+                        queue.Enqueue(child);
+                    }
+                }
             }
         }
     }

@@ -69,7 +69,7 @@ namespace EasyLibs
         {
             Debug.Log("Export all the source code.");
 
-            string[] fileList = AssetDatabase.FindAssets("t:Object", new string[] { "Assets/Script" });
+            string[] fileList = AssetDatabase.FindAssets("t:Object", new string[] { "Assets/Game/Script" });
 
             int count = 0;
             StringBuilder sb = new StringBuilder();
@@ -95,6 +95,13 @@ namespace EasyLibs
 
             // write the out 
             File.WriteAllText("code.txt", sb.ToString());
+        }
+
+        [MenuItem("EasyLibs/Open Settings Folder")]
+        static public void OpenSettingFolder()
+        {
+            // open folder in explore
+            System.Diagnostics.Process.Start(System.Environment.CurrentDirectory + "/Assets/GameSettings~");
         }
     }
 }
