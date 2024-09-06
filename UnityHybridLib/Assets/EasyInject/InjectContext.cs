@@ -115,14 +115,29 @@ namespace EasyLibs
             }
         }
 
+        public T Get<T>(string id = null)
+        {
+            BindingData bd = getBindingData(typeof(T), id);
+
+            if (bd == null)
+                return default(T);
+
+            return (T)bd.GetValue();
+        }
+
 
         private BindingData getBindingData(Type t, Inject inject)
         {
+            return getBindingData(t, inject.Id);
+        }
+
+        private BindingData getBindingData(Type t, string id)
+        {
             BindingData bd = null;
 
-            foreach(BindingData b in m_bindingDatas)
+            foreach (BindingData b in m_bindingDatas)
             {
-                if(b.MatchKey(t) && b.MatchId(inject.Id))
+                if (b.MatchKey(t) && b.MatchId(id))
                 {
                     bd = b;
                     break;
