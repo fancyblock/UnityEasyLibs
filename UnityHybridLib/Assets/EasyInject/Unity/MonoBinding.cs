@@ -8,6 +8,7 @@ namespace EasyLibs
     {
         [SerializeField] private GameObjectBindingInfo m_goBinding;
         [SerializeField] private List<MonoBindingInfo> m_bindings;
+        [SerializeField] private List<ScriptableObjBindingInfo> m_scriptableObjBindings;
 
 
         // binding
@@ -27,6 +28,17 @@ namespace EasyLibs
                 if (!string.IsNullOrEmpty(i.m_id))
                     bd.WithId(i.m_id);
             }
+
+            if(m_scriptableObjBindings != null)
+            {
+                foreach(var i in m_scriptableObjBindings)
+                {
+                    BindingData bd = InjectContext.Instance.Bind(i.m_scriptableObj.GetType(), i.m_scriptableObj);
+
+                    if (!string.IsNullOrEmpty(i.m_id))
+                        bd.WithId(i.m_id);
+                }
+            }
         }
 
         // unbinding
@@ -40,6 +52,11 @@ namespace EasyLibs
             foreach(var i in m_bindings)
             {
                 InjectContext.Instance.UnbindingData(i.m_monobehaviour.GetType(), i.m_monobehaviour);
+            }
+
+            foreach(var i in m_scriptableObjBindings)
+            {
+                InjectContext.Instance.UnbindingData(i.m_scriptableObj.GetType(), i.m_scriptableObj);
             }
         }
     }

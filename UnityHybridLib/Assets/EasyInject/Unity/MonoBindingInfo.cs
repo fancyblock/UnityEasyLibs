@@ -16,4 +16,11 @@ namespace EasyLibs
         public MonoBehaviour m_monobehaviour;
         public string m_id;
     }
+
+    [Serializable]
+    public class ScriptableObjBindingInfo
+    {
+        public ScriptableObject m_scriptableObj;
+        public string m_id;
+    }
 }

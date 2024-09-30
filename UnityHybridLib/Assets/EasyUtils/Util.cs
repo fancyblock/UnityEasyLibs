@@ -198,6 +198,26 @@ namespace EasyLibs
             return index;
         }
 
+        static public List<int> GetRandomIndeies(int count, int chooseCount)
+        {
+            List<int> indeies = new List<int>();
+            List<int> res = new List<int>();
+
+            for(int i = 0;i < count; i++)
+                indeies.Add(i);
+
+            for(int i = 0; i < chooseCount; i++)
+            {
+                int indexindex = UnityEngine.Random.Range(0, indeies.Count);
+                int index = indeies[indexindex];
+                indeies.RemoveAt(indexindex);
+
+                res.Add(index);
+            }
+
+            return res;
+        }
+
         /// <summary>
         /// clamp the vec3
         /// </summary>
@@ -234,5 +254,73 @@ namespace EasyLibs
             return ts.ToString(@"mm\:ss");
         }
 
+        public static Vector2 RotateAroundPoint(Vector2 point, Vector2 pivot, float angle)
+        {
+            float rad = angle * Mathf.Deg2Rad;
+            float cos = Mathf.Cos(rad);
+            float sin = Mathf.Sin(rad);
+            Vector2 dir = point - pivot;
+            Vector2 rotatedDir = new Vector2(
+                dir.x * cos - dir.y * sin,
+                dir.x * sin + dir.y * cos
+            );
+            return pivot + rotatedDir;
+        }
+
+        public static Vector3 RotateAroundPoint(Vector2 point, Vector2 pivot, float angle, float z)
+        {
+            float rad = angle * Mathf.Deg2Rad;
+            float cos = Mathf.Cos(rad);
+            float sin = Mathf.Sin(rad);
+            Vector2 dir = point - pivot;
+            Vector2 rotatedDir = new Vector2(
+                dir.x * cos - dir.y * sin,
+                dir.x * sin + dir.y * cos
+            );
+
+            Vector2 pos = pivot + rotatedDir;
+
+            return new Vector3(pos.x, pos.y, z);
+        }
+
+        public static Vector2 ScaleToFit(Vector2 size, Vector2 targetSize)
+        {
+            float widthScale = targetSize.x / size.x;
+            float heightScale = targetSize.y / size.y;
+
+            float scale = Mathf.Min(widthScale, heightScale);
+
+            return size * scale;
+        }
+
+        public static void UnsetSpriteMask(GameObject go)
+        {
+            Queue<Transform> queue = new Queue<Transform>();
+            queue.Enqueue(go.transform);
+
+            while (queue.Count > 0)
+            {
+                Transform t = queue.Dequeue();
+
+                SpriteRenderer sr = t.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                    sr.maskInteraction = SpriteMaskInteraction.None;
+
+                for (int i = 0; i < t.childCount; i++)
+                {
+                    Transform child = t.GetChild(i);
+                    queue.Enqueue(child);
+                }
+            }
+        }
+
+        public static Vector2 BezierVec2(Vector2 startPos, Vector2 endPos, Vector2 controlPos, float progress)
+        {
+            float t = Mathf.Clamp01(progress);
+
+            Vector2 pos = (1 - t) * (1 - t) * startPos + 2 * (1 - t) * t * controlPos + t * t * endPos;
+
+            return pos;
+        }
     }
 }
