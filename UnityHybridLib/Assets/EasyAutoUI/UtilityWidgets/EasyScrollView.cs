@@ -15,12 +15,21 @@ namespace EasyLibs
             horizontal,
         }
 
+        public enum eFixedItem
+        {
+            none,
+            first,
+            last,
+        }
+
         public event Action<int, GameObject> ON_ITEM_FILL;
 
         [SerializeField] protected GameObject m_itemPrefab;
+        [SerializeField] protected GameObject m_fixedItemPrefab;
         [SerializeField] protected Vector2 m_itemSize;
         [SerializeField] protected Vector2 m_itemInterval;
-        [SerializeField] protected int m_perItemCount = 1;                // 同行/列Item个数
+        [SerializeField] protected int m_perItemCount = 1;                      // 同行/列Item个数
+        [SerializeField] protected eFixedItem m_fixedItemType = eFixedItem.none;    // 固定Item（一般用于view里的操作项目，比如“创建新的”）
 
         [SerializeField] protected ScrollRect m_scrollRect;
         [SerializeField] protected RectTransform m_itemContainer;
@@ -33,6 +42,8 @@ namespace EasyLibs
         protected float m_currentScrollPosotion;
         protected Dictionary<int, GameObject> m_itemDic = new Dictionary<int, GameObject>();
         protected List<int> m_currentPageIndeies = new List<int>();
+
+        protected GameObject m_fixedItemGo = null;
 
 
         public void Load(int count, Action<int, GameObject> setFunc)
@@ -107,6 +118,23 @@ namespace EasyLibs
                     recycleItem(go);
 
                 m_itemDic.Clear();
+            }
+
+            //precreate the fixed item
+            if(m_fixedItemType != eFixedItem.none)
+            {
+                if(m_fixedItemGo == null)
+                {
+                    GameObject go = Instantiate(m_fixedItemPrefab, m_itemContainer);
+                    go.transform.localScale = Vector3.one;
+                    m_fixedItemGo = go;
+
+                    recycleItem(go);
+                }
+                else
+                {
+                    recycleItem(m_fixedItemGo);
+                }
             }
 
             if (m_direction == Dir.vertical)
@@ -204,7 +232,7 @@ namespace EasyLibs
                 if (index >= m_itemCount)
                     break;
 
-                GameObject itemGo = allocItem();
+                GameObject itemGo = allocItem(index);
                 itemGo.transform.localPosition = getItemPosition(index);
                 m_itemDic.Add(index, itemGo);
                 ON_ITEM_FILL(index, itemGo);
@@ -229,7 +257,7 @@ namespace EasyLibs
                 if (index >= m_itemCount)
                     break;
 
-                GameObject itemGo = allocItem();
+                GameObject itemGo = allocItem(index);
                 itemGo.transform.localPosition = getItemPosition(index);
                 m_itemDic.Add(index, itemGo);
                 ON_ITEM_FILL(index, itemGo);
@@ -324,7 +352,7 @@ namespace EasyLibs
 
             foreach (int newIndex in pageIndeies.Except<int>(m_currentPageIndeies))
             {
-                GameObject itemGo = allocItem();
+                GameObject itemGo = allocItem(newIndex);
                 itemGo.transform.localPosition = getItemPosition(newIndex);
                 m_itemDic.Add(newIndex, itemGo);
                 ON_ITEM_FILL(newIndex, itemGo);
@@ -333,18 +361,45 @@ namespace EasyLibs
             m_currentPageIndeies = pageIndeies;
         }
 
-        private GameObject allocItem()
+        private GameObject allocItem(int index)
         {
-            GameObject go = m_pendingItemList.First<GameObject>();
-            m_pendingItemList.Remove(go);
-            go.SetActive(true);
+            GameObject go = null;
+
+            if (m_fixedItemType != eFixedItem.none)
+            {
+                if(m_fixedItemType == eFixedItem.first && index == 0)
+                {
+                    go = m_fixedItemGo;
+                    go.SetActive(true);
+                }
+                else if(m_fixedItemType == eFixedItem.last && index == (m_itemCount - 1))
+                {
+                    go = m_fixedItemGo;
+                    go.SetActive(true);
+                }
+            }
+
+            if (go == null)
+            {
+                go = m_pendingItemList.First<GameObject>();
+                m_pendingItemList.Remove(go);
+                go.SetActive(true);
+            }
 
             return go;
         }
 
         private void recycleItem(GameObject item)
         {
-            m_pendingItemList.Add(item);
+            if (m_fixedItemType != eFixedItem.none && item == m_fixedItemGo)
+            {
+                // do nothing
+            }
+            else
+            {
+                m_pendingItemList.Add(item);
+            }
+
             item.SetActive(false);
         }
 
