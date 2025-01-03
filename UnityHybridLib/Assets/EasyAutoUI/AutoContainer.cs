@@ -301,6 +301,11 @@ namespace EasyLibs
             GetWidget(widgetName).ShowTab(name);
         }
 
+        public void SetTabSwitchCallback(string widgetName, Action<int, string> callback)
+        {
+            GetWidget<EasyTabView>(widgetName).SetSwitchCallback(callback);
+        }
+
 
         public void SetButtonClkHook(Action<string> hook)
         {

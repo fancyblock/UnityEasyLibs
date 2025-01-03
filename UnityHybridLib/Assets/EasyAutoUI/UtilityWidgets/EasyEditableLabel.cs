@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 namespace EasyLibs
 {
@@ -10,25 +11,32 @@ namespace EasyLibs
     {
         [SerializeField] private TextMeshProUGUI m_text;
         [SerializeField] private TMP_InputField m_inputField;
+        [SerializeField] private GameObject m_noEditGo;
+        [SerializeField] private Button m_btnEdit;
 
         private Action<string> m_changeCallback;
+        private Action<string> m_submitCallback;
 
 
         void Awake()
         {
             m_text.enabled = true;
+            if(m_noEditGo != null)
+                m_noEditGo.SetActive(true);
             m_inputField.gameObject.SetActive(false);
 
+            if(m_btnEdit != null)
+                m_btnEdit.onClick.AddListener(ActiveEdit);
+            
             m_inputField.onEndEdit.AddListener(onEndEdit);
-        }
-
-        void Start()
-        {
+            m_inputField.onSubmit.AddListener(onSubmit);
         }
 
         public void ActiveEdit()
         {
             m_text.enabled = false;
+            if (m_noEditGo != null)
+                m_noEditGo?.SetActive(false);
             m_inputField.gameObject.SetActive(true);
 
             m_inputField.text = m_text.text;
@@ -53,16 +61,28 @@ namespace EasyLibs
             m_changeCallback = callback;
         }
 
+        public void SetSubmitCallback(Action<string> callback)
+        {
+            m_submitCallback = callback;
+        }
+
 
         private void onEndEdit(string str)
         {
             m_text.enabled = true;
+            if (m_noEditGo != null)
+                m_noEditGo?.SetActive(true);
             m_inputField.gameObject.SetActive(false);
 
             m_text.text = str;
 
             // invoke callback
             m_changeCallback?.Invoke(str);
+        }
+
+        private void onSubmit(string str)
+        {
+            m_submitCallback?.Invoke(str);
         }
 
 

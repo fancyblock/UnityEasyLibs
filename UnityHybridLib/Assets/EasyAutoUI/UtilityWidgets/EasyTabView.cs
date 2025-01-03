@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,10 @@ namespace EasyLibs
     {
         [SerializeField] List<Button> m_tabButtons;
         [SerializeField] List<GameObject> m_tabList;
+        [SerializeField] List<GameObject> m_buttonCovers;
         [SerializeField] int m_defaultTabIndex = 0;
+
+        private Action<int, string> m_switchCallback;
 
 
         void Awake()
@@ -57,6 +61,8 @@ namespace EasyLibs
                         panel.SendMessage("OnOpenView", m_tabButtons[index].gameObject.name, SendMessageOptions.DontRequireReceiver);
 
                         open = true;
+
+                        m_switchCallback?.Invoke(index, panel.gameObject.name);
                     }
                 }
                 else
@@ -64,17 +70,45 @@ namespace EasyLibs
                     panel.SetActive(false);
                 }
             }
+
+            if(m_buttonCovers != null && m_buttonCovers.Count > 0)
+            {
+                for (int i = 0; i < m_buttonCovers.Count; i++)
+                    m_buttonCovers[i].SetActive(i == index);
+            }
         }
 
         public void ShowTab(string name)
         {
+            int index = -1;
+
             for (int i = 0; i < m_tabList.Count; i++)
             {
-                m_tabList[i].SetActive(m_tabList[i].gameObject.name == name);
-                m_tabButtons[i].interactable = m_tabList[i].gameObject.name != name;
+                bool cur = m_tabList[i].gameObject.name == name;
 
-                if (m_tabList[i].gameObject.name == name)
+                if(cur)
+                {
+                    index = i;
+                    m_tabList[i].SetActive(true);
                     m_tabList[i].SendMessage("OnOpenView", m_tabButtons[i].gameObject.name, SendMessageOptions.DontRequireReceiver);
+
+                    m_switchCallback?.Invoke(index, name);
+                }
+                else
+                {
+                    m_tabList[i].SetActive(false);
+                }
+
+                m_tabButtons[i].interactable = !cur;
+            }
+
+            if(index >= 0)
+            {
+                if(m_buttonCovers != null && m_buttonCovers.Count > 0)
+                {
+                    for (int i = 0; i < m_buttonCovers.Count; i++)
+                        m_buttonCovers[i].SetActive(i == index);
+                }
             }
         }
 
@@ -88,6 +122,11 @@ namespace EasyLibs
             int index = btnNames.IndexOf(tabBtnName);
 
             ShowTab(index);
+        }
+
+        public void SetSwitchCallback(Action<int, string> callback)
+        {
+            m_switchCallback = callback;
         }
     }
 }

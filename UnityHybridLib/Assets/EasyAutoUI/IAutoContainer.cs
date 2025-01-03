@@ -36,6 +36,7 @@ namespace EasyLibs
         void SnapTo(string widgetName, int index);
         void ShowTab(string widgetName, int index);
         void ShowTab(string widgetName, string name);
+        void SetTabSwitchCallback(string widgetName, Action<int, string> callback);
 
 
         void Bind<T>(string widgetName, IBindingData data, string fieldName) where T : BaseBindingWidget;

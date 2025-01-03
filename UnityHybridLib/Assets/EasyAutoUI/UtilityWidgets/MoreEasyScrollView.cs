@@ -36,7 +36,16 @@ namespace EasyLibs
 
         public void SnapTo(int index)
         {
-            //TODO 
+            Canvas.ForceUpdateCanvases();
+
+            Vector2 viewportLocalPosition = m_scrollRect.viewport.anchoredPosition;
+            Vector2 childLocalPosition = (m_itemGOs[index].transform as RectTransform).anchoredPosition;
+            Vector2 result = new Vector2(
+                0,
+                viewportLocalPosition.y - childLocalPosition.y
+            );
+
+            m_itemContainer.anchoredPosition = result;
         }
 
         public List<GameObject> ITEMS

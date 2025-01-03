@@ -105,7 +105,16 @@ namespace EasyLibs
 
 #if UNITY_EDITOR
             filePath = $"{Application.dataPath}/GameSettings~/{name}.xlsx";
-            dataJson = loadExcelAsJson(filePath);
+
+            if (File.Exists(filePath))
+            {
+                dataJson = loadExcelAsJson(filePath);
+            }
+            else
+            {
+                filePath = $"Settings/{name}";
+                dataJson = loadTextAsJson(filePath);
+            }
 #else
         filePath = $"Settings/{name}";
         dataJson = loadTextAsJson(filePath);

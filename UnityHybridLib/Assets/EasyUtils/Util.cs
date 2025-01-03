@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 namespace EasyLibs
 {
@@ -58,6 +60,26 @@ namespace EasyLibs
                 GameObject g = gameObjects.Dequeue();
 
                 SpriteRenderer sr = g.GetComponent<SpriteRenderer>();
+
+                if (sr != null)
+                    sr.color = color;
+
+                for (int i = 0; i < g.transform.childCount; i++)
+                    gameObjects.Enqueue(g.transform.GetChild(i).gameObject);
+            }
+        }
+
+        static public void SetImageColor(GameObject go, Color color)
+        {
+            Queue<GameObject> gameObjects = new Queue<GameObject>();
+
+            gameObjects.Enqueue(go);
+
+            while (gameObjects.Count > 0)
+            {
+                GameObject g = gameObjects.Dequeue();
+
+                Image sr = g.GetComponent<Image>();
 
                 if (sr != null)
                     sr.color = color;
@@ -321,6 +343,38 @@ namespace EasyLibs
             Vector2 pos = (1 - t) * (1 - t) * startPos + 2 * (1 - t) * t * controlPos + t * t * endPos;
 
             return pos;
+        }
+
+        /// <summary>
+        /// 创建一个新list然后遍历调用list里元素的接口（如果该接口是从原list里删除该元素则这个方法比较安全）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="action"></param>
+        public static void SafeListInvoker<T>(List<T> list, Action<T> action)
+        {
+            List<T> tempList = new List<T>();
+
+            tempList.AddRange(list);
+
+            foreach(var i in tempList)
+            {
+                action(i);
+            }
+        }
+
+        public static List<string> ParseStringList(string str, char split)
+        {
+            List<string> list = new List<string>();
+
+            string[] strs = str.Split(split);
+
+            foreach(var s in strs)
+            {
+                list.Add(s);
+            }
+
+            return list;
         }
     }
 }

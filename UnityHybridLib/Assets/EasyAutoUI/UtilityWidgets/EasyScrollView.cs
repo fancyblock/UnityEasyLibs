@@ -28,8 +28,8 @@ namespace EasyLibs
         [SerializeField] protected GameObject m_fixedItemPrefab;
         [SerializeField] protected Vector2 m_itemSize;
         [SerializeField] protected Vector2 m_itemInterval;
-        [SerializeField] protected int m_perItemCount = 1;                      // 同行/列Item个数
-        [SerializeField] protected eFixedItem m_fixedItemType = eFixedItem.none;    // 固定Item（一般用于view里的操作项目，比如“创建新的”）
+        [SerializeField] protected int m_perItemCount = 1;                      // 
+        [SerializeField] protected eFixedItem m_fixedItemType = eFixedItem.none;    // 
 
         [SerializeField] protected ScrollRect m_scrollRect;
         [SerializeField] protected RectTransform m_itemContainer;
@@ -113,7 +113,7 @@ namespace EasyLibs
             }
             else
             {
-                // 回收之前的Item 
+                // recycle all the items
                 foreach (GameObject go in m_itemDic.Values)
                     recycleItem(go);
 
