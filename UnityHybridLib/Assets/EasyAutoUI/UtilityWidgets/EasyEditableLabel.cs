@@ -16,6 +16,8 @@ namespace EasyLibs
 
         private Action<string> m_changeCallback;
         private Action<string> m_submitCallback;
+        private Action<string> m_pasteCallback;
+        private bool m_isPasting = false;
 
 
         void Awake()
@@ -28,6 +30,7 @@ namespace EasyLibs
             if(m_btnEdit != null)
                 m_btnEdit.onClick.AddListener(ActiveEdit);
             
+            m_inputField.onValueChanged.AddListener(onValueChange);
             m_inputField.onEndEdit.AddListener(onEndEdit);
             m_inputField.onSubmit.AddListener(onSubmit);
         }
@@ -66,6 +69,29 @@ namespace EasyLibs
             m_submitCallback = callback;
         }
 
+        public void SetPasteCallback(Action<string> callback)
+        {
+            m_pasteCallback = callback;
+        }
+
+
+        private void onValueChange(string str)
+        {
+            if(!m_isPasting && Input.GetKey(KeyCode.V) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
+            {
+                m_isPasting = true;
+                StartCoroutine(handlePaste(str));
+            }
+        }
+
+        private IEnumerator handlePaste(string str)
+        {
+            yield return new WaitForEndOfFrame();
+
+            m_isPasting = false;
+            
+            m_pasteCallback?.Invoke(GUIUtility.systemCopyBuffer);
+        }
 
         private void onEndEdit(string str)
         {

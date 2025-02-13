@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Globalization;
 
 
 namespace EasyLibs
@@ -376,5 +377,18 @@ namespace EasyLibs
 
             return list;
         }
+
+        public static DateTime ParseDateTime(string dateStr)
+        {
+            return DateTime.ParseExact(dateStr, "yyyy/MM/dd", 
+                                        CultureInfo.InvariantCulture, 
+                                        DateTimeStyles.AdjustToUniversal);
+        }
+
+        public static string DateTime2String(DateTime date)
+        {
+            return date.ToLocalTime().ToString("yyyy/MM/dd");
+        }
+
     }
 }

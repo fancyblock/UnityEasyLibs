@@ -24,7 +24,6 @@ namespace EasyLibs
         private Action<string> m_inputFieldChangeEvent;
 
         private TMP_InputField m_tmpInputField = null;
-        //TODO 
 
         private Dropdown m_dropDown = null;
         private Action<bool> m_toggleChangeEvent;

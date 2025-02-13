@@ -155,6 +155,19 @@ namespace EasyLibs
             refreshView(true);
         }
 
+        public int CURRENT_SNAP_INDEX
+        {
+            get
+            {
+                if (m_direction == Dir.vertical)
+                    return Mathf.FloorToInt(m_itemContainer.localPosition.y / (m_itemSize.y + m_itemInterval.y)) * m_perItemCount;
+                else if (m_direction == Dir.horizontal)
+                    return Mathf.FloorToInt(-m_itemContainer.localPosition.x / (m_itemSize.x + m_itemInterval.x)) * m_perItemCount;
+
+                return 0;
+            }
+        }
+
         public void Refresh()
         {
             for (int i = 0; i < m_itemCount; i++)
@@ -164,11 +177,19 @@ namespace EasyLibs
             }
         }
 
+        public int ITEM_COUNT
+        {
+            get{ return m_itemCount; }
+        }
+
         public Transform ITEM_CONTAINER
         {
             get { return m_itemContainer; }
         }
 
+        /// <summary>
+        /// Get the displayed items (for some hack useage)
+        /// </summary>
         public List<GameObject> DISPLAYED_ITEMS
         {
             get
@@ -177,6 +198,9 @@ namespace EasyLibs
             }
         }
 
+        /// <summary>
+        /// unstable
+        /// </summary>
         public void AddOneItem()
         {
             m_itemCount++;
@@ -213,6 +237,7 @@ namespace EasyLibs
         {
             refreshView();
         }
+
 
         #region private part
 

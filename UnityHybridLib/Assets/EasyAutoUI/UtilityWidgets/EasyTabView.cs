@@ -13,6 +13,7 @@ namespace EasyLibs
         [SerializeField] int m_defaultTabIndex = 0;
 
         private Action<int, string> m_switchCallback;
+        private int m_curPanelIndex = -1;
 
 
         void Awake()
@@ -39,6 +40,8 @@ namespace EasyLibs
 
         public void ShowTab(int index)
         {
+            m_curPanelIndex = index;
+
             GameObject showedPanel = null;
 
             for (int i = 0; i < m_tabList.Count; i++)
@@ -104,6 +107,8 @@ namespace EasyLibs
 
             if(index >= 0)
             {
+                m_curPanelIndex = index;
+
                 if(m_buttonCovers != null && m_buttonCovers.Count > 0)
                 {
                     for (int i = 0; i < m_buttonCovers.Count; i++)
@@ -127,6 +132,11 @@ namespace EasyLibs
         public void SetSwitchCallback(Action<int, string> callback)
         {
             m_switchCallback = callback;
+        }
+
+        public int CUR_PANEL_INDEX
+        {
+            get { return m_curPanelIndex; }
         }
     }
 }
