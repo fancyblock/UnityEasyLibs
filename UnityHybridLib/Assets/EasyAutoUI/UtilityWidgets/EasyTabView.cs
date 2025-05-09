@@ -7,9 +7,16 @@ namespace EasyLibs
 {
     public class EasyTabView : MonoBehaviour
     {
+        [Serializable]
+        public class RelatedObject
+        {
+            public List<GameObject> m_objects;
+        }
+
         [SerializeField] List<Button> m_tabButtons;
         [SerializeField] List<GameObject> m_tabList;
         [SerializeField] List<GameObject> m_buttonCovers;
+        [SerializeField] List<RelatedObject> m_relatedObjects;
         [SerializeField] int m_defaultTabIndex = 0;
 
         private Action<int, string> m_switchCallback;
@@ -79,6 +86,23 @@ namespace EasyLibs
                 for (int i = 0; i < m_buttonCovers.Count; i++)
                     m_buttonCovers[i].SetActive(i == index);
             }
+
+            if(m_relatedObjects != null && m_relatedObjects.Count > 0)
+            {
+                for (int i = 0; i < m_relatedObjects.Count; i++)
+                {
+                    if (i == index)
+                    {
+                        foreach (GameObject obj in m_relatedObjects[i].m_objects)
+                            obj.SetActive(true);
+                    }
+                    else
+                    {
+                        foreach (GameObject obj in m_relatedObjects[i].m_objects)
+                            obj.SetActive(false);
+                    }
+                }
+            }
         }
 
         public void ShowTab(string name)
@@ -113,6 +137,23 @@ namespace EasyLibs
                 {
                     for (int i = 0; i < m_buttonCovers.Count; i++)
                         m_buttonCovers[i].SetActive(i == index);
+                }
+            }
+
+            if(m_relatedObjects != null && m_relatedObjects.Count > 0)
+            {
+                for (int i = 0; i < m_relatedObjects.Count; i++)
+                {
+                    if (i == index)
+                    {
+                        foreach (GameObject obj in m_relatedObjects[i].m_objects)
+                            obj.SetActive(true);
+                    }
+                    else
+                    {
+                        foreach (GameObject obj in m_relatedObjects[i].m_objects)
+                            obj.SetActive(false);
+                    }
                 }
             }
         }

@@ -418,7 +418,7 @@ namespace EasyLibs
         {
             if (m_fixedItemType != eFixedItem.none && item == m_fixedItemGo)
             {
-                // do nothing
+                item.SetActive(false);
             }
             else
             {

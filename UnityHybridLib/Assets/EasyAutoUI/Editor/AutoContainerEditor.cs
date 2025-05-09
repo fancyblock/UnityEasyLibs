@@ -39,6 +39,12 @@ namespace EasyLibs
 
             EditorGUILayout.Space();
 
+            GUIStyle coloredLabelStyle = new GUIStyle(EditorStyles.label);
+            coloredLabelStyle.normal.textColor = Color.red; // Set the color to red
+
+            EditorGUILayout.LabelField($"{widgets.Count} widgets in all.", coloredLabelStyle);
+            EditorGUILayout.Space();
+
             if (GUILayout.Button("ConnectWidgets"))
             {
                 AutoUiTool.ConnectWidgets(ac.gameObject);

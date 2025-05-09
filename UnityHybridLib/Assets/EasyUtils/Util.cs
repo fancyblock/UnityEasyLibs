@@ -390,5 +390,20 @@ namespace EasyLibs
             return date.ToLocalTime().ToString("yyyy/MM/dd");
         }
 
+        public static string HighlightText(string originText, string highlightText, string v1, string v2)
+        {
+            string text = originText;
+
+            int index = text.IndexOf(highlightText);
+
+            if(index != -1)
+            {
+                text = text.Insert(index, v1);
+                text = text.Insert(index + highlightText.Length + v1.Length, v2);
+            }
+
+            return text;
+        }
     }
+    
 }
