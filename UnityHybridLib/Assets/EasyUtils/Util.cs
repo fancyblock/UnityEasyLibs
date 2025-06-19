@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Globalization;
 
-
 namespace EasyLibs
 {
     public class Util
@@ -404,6 +403,17 @@ namespace EasyLibs
 
             return text;
         }
+
+        public static string ReplaceAllString(string rawStr, string pattern, string newStr)
+        {
+            string result = rawStr;
+
+            while(result.Contains(pattern))
+            {
+                result = result.Replace(pattern, newStr);
+            }
+
+            return result;
+        }
     }
-    
 }

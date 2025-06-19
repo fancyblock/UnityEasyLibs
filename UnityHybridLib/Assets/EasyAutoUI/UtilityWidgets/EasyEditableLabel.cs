@@ -13,7 +13,9 @@ namespace EasyLibs
         [SerializeField] private TMP_InputField m_inputField;
         [SerializeField] private GameObject m_noEditGo;
         [SerializeField] private Button m_btnEdit;
+        [SerializeField] private int m_maxLength = 100;
 
+        private Action<string> m_textUpdateCallback;
         private Action<string> m_changeCallback;
         private Action<string> m_submitCallback;
         private Action<string> m_pasteCallback;
@@ -59,6 +61,11 @@ namespace EasyLibs
             }
         }
 
+        public void SetTextUpdateCallback(Action<string> callback)
+        {
+            m_textUpdateCallback = callback;
+        }
+
         public void SetChangeCallback(Action<string> callback)
         {
             m_changeCallback = callback;
@@ -77,10 +84,24 @@ namespace EasyLibs
 
         private void onValueChange(string str)
         {
-            if(!m_isPasting && Input.GetKey(KeyCode.V) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
+            Util.Log($"EasyEditableLabel: onValueChange");
+
+            if(str.Length > m_maxLength)
+            {
+                str = str.Substring(0, m_maxLength);
+                m_inputField.text = str;
+
+                return;
+            }
+
+            if (!m_isPasting && Input.GetKey(KeyCode.V) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
             {
                 m_isPasting = true;
                 StartCoroutine(handlePaste(str));
+            }
+            else
+            {
+                m_textUpdateCallback?.Invoke(str);
             }
         }
 
@@ -91,10 +112,14 @@ namespace EasyLibs
             m_isPasting = false;
             
             m_pasteCallback?.Invoke(GUIUtility.systemCopyBuffer);
+
+            m_textUpdateCallback?.Invoke(str);
         }
 
         private void onEndEdit(string str)
         {
+            Util.Log($"EasyEditableLabel: onEditEnd");
+
             m_text.enabled = true;
             if (m_noEditGo != null)
                 m_noEditGo?.SetActive(true);
