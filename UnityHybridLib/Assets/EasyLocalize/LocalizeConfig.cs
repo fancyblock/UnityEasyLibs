@@ -9,7 +9,6 @@ namespace EasyLibs
     public class LocalizeConfig : ScriptableObject
     {
         public TextAsset languageFile;
-        public bool csvFormat = true;   // if true, use csv format, otherwise use json format
 
         public List<string> Languages = new List<string>();
 
