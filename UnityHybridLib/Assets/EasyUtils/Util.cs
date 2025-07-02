@@ -5,6 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace EasyLibs
 {
@@ -414,6 +416,71 @@ namespace EasyLibs
             }
 
             return result;
+        }
+
+        public static string ComputeMD5Hash(string input)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2"));
+                }
+                return sb.ToString();
+            }
+        }
+
+        public static Texture2D ClipTextureTransparent(Texture2D original)
+        {
+            int width = original.width;
+            int height = original.height;
+
+            // Get the pixel colors of the original texture
+            Color[] pixels = original.GetPixels();
+
+            // Determine the bounds of the non-transparent area
+            int minX = width, minY = height, maxX = 0, maxY = 0;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color pixel = pixels[y * width + x];
+                    if (pixel.a > 0)
+                    {
+                        if (x < minX) minX = x;
+                        if (y < minY) minY = y;
+                        if (x > maxX) maxX = x;
+                        if (y > maxY) maxY = y;
+                    }
+                }
+            }
+
+            // Create a new texture with the non-transparent area
+            int clippedWidth = maxX - minX + 1;
+            int clippedHeight = maxY - minY + 1;
+
+            if (clippedWidth <= 0 || clippedHeight <= 0)
+                return null;
+
+            Texture2D clippedTexture = new Texture2D(clippedWidth, clippedHeight);
+
+            // Copy the non-transparent pixels to the new texture
+            for (int y = 0; y < clippedHeight; y++)
+            {
+                for (int x = 0; x < clippedWidth; x++)
+                {
+                    Color pixel = original.GetPixel(minX + x, minY + y);
+                    clippedTexture.SetPixel(x, y, pixel);
+                }
+            }
+
+            clippedTexture.Apply();
+
+            return clippedTexture;
         }
     }
 }
