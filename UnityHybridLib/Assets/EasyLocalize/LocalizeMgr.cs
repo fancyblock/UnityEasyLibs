@@ -50,6 +50,11 @@ namespace EasyLibs
             get { return m_curLanguageIndex; }
         }
 
+        public string CURRENT_LANGUAGE
+        {
+            get { return m_config.Languages[m_curLanguageIndex]; }
+        }
+
         public void ChangeLanguage(string lang)
         {
             int index = m_config.Languages.IndexOf(lang);
