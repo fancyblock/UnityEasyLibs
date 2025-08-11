@@ -95,6 +95,21 @@ namespace EasyLibs
             File.WriteAllText(jsonPath, jsonStr);
         }
 
+        public string LoadJsonFromPath(string path, bool inAssets = true)
+        {
+            string filePath = inAssets ? $"{Application.dataPath}/{path}" : path;
+
+            if(File.Exists(filePath))
+            {
+                return loadExcelAsJson(filePath);
+            }
+            else
+            {
+                Debug.LogError($"配置文件 {filePath} 不存在");
+                return null;
+            }
+        }
+
 #endif
 
 
@@ -116,8 +131,8 @@ namespace EasyLibs
                 dataJson = loadTextAsJson(filePath);
             }
 #else
-        filePath = $"Settings/{name}";
-        dataJson = loadTextAsJson(filePath);
+            filePath = $"Settings/{name}";
+            dataJson = loadTextAsJson(filePath);
 #endif
 
             return dataJson;
