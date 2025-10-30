@@ -10,6 +10,7 @@ namespace EasyLibs
         {
             public object rawCallback;
             public Action<object> callback;
+            public bool once = false;
         }
 
         private Dictionary<string, List<CallerInfo>> m_caller = new Dictionary<string, List<CallerInfo>>();
@@ -95,6 +96,42 @@ namespace EasyLibs
             return false;
         }
 
+        public void SubscribeOnce<TSignal>(Action<TSignal> callback)
+        {
+            string typeName = typeof(TSignal).Name;
+
+            if (m_caller.ContainsKey(typeName) == false)
+            {
+                m_caller.Add(typeName, new List<CallerInfo>());
+            }
+
+            // check if already subscribed
+            bool alreadyExist = false;
+            List<CallerInfo> callers = m_caller[typeName];
+            foreach (CallerInfo caller in callers)
+            {
+                if ((Action<TSignal>)caller.rawCallback == callback)
+                {
+                    alreadyExist = true;
+                    break;
+                }
+            }
+
+            if (alreadyExist)
+            {
+                Debug.LogWarning($"Subscribe {typeof(TSignal).Name} already exist.");
+            }
+            else
+            {
+                CallerInfo ci = new CallerInfo();
+                ci.rawCallback = callback;
+                ci.callback = (obj) => callback.Invoke((TSignal)obj);
+                ci.once = true;
+
+                m_caller[typeName].Add(ci);
+            }
+        }
+
         public bool RegisitCommand<TSignal>(Type commandType)
         {
             string typeName = typeof(TSignal).Name;
@@ -119,8 +156,23 @@ namespace EasyLibs
                 var callers = new List<CallerInfo>();
                 callers.AddRange(m_caller[typeName]);
 
+                List<CallerInfo> toRemove = new List<CallerInfo>();
+
                 foreach (var caller in callers)
+                {
                     caller.callback.Invoke(signal);
+
+                    if(caller.once)
+                    {
+                        toRemove.Add(caller);
+                    }
+                }
+
+                // remove once caller
+                foreach(var caller in toRemove)
+                {
+                    m_caller[typeName].Remove(caller);
+                }
             }
 
             if (m_command.ContainsKey(typeName))

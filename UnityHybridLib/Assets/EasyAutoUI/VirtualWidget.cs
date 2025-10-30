@@ -62,6 +62,8 @@ namespace EasyLibs
 
         public void SetToggleChangeEvent(Action<bool> onToggleChange) { }
 
+        public void SetToggleValueWithoutCallback(bool isOn) { }
+
         public void SetRawImage(Texture2D texture) { }
 
         public void SetImageColor(Color color) { }

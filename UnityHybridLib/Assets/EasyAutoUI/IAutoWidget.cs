@@ -60,6 +60,8 @@ namespace EasyLibs
 
         void SetToggleValue(bool isOn);
 
+        void SetToggleValueWithoutCallback(bool isOn);
+
         void SetToggleGroupEvent(Action<bool, string> onToggled);
 
         void SetDropListItems(List<string> items);

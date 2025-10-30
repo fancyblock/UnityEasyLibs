@@ -368,6 +368,14 @@ namespace EasyLibs
             m_toggle.isOn = isOn;
         }
 
+        public void SetToggleValueWithoutCallback(bool isOn)
+        {
+            if (m_toggle == null)
+                m_toggle = GetComponent<Toggle>();
+
+            m_toggle.SetIsOnWithoutNotify(isOn);
+        }
+
         public void SetToggleChangeEvent(Action<bool> onToggleChange)
         {
             if (m_toggle == null)
@@ -431,9 +439,9 @@ namespace EasyLibs
                 m_tmpInputField = GetComponent<TMP_InputField>();
 
             if (m_inputField != null)
-                m_inputField.text = val;
+                m_inputField.SetTextWithoutNotify(val);
             else if (m_tmpInputField != null)
-                m_tmpInputField.text = val;
+                m_tmpInputField.SetTextWithoutNotify(val);
         }
 
         public string GetInputFieldVal()

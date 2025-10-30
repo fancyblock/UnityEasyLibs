@@ -3,15 +3,15 @@ using UnityEngine;
 
 namespace EasyLibs
 {
-    [RequireComponent(typeof(TextMeshProUGUI))]
-    public class LocalizeTextWidget : MonoBehaviour, ILocalizeWidget
+    [RequireComponent(typeof(TextMeshPro))]
+    public class LocalizeMeshTextWidget : MonoBehaviour, ILocalizeWidget
     {
         [SerializeField] protected string m_key;
         [SerializeField] protected string m_type;
 
         private bool m_init = false;
 
-        private TextMeshProUGUI m_text;
+        private TextMeshPro m_text;
         private float m_defaultFontSize;
         private float m_defaultFontSizeMin;
         private float m_defaultFontSizeMax;
@@ -54,6 +54,8 @@ namespace EasyLibs
                 m_text.fontSizeMin = m_defaultFontSizeMin * cfg.fontSizeMinRatio;
                 m_text.fontSizeMax = m_defaultFontSizeMax * cfg.fontSizeMaxRatio;
             }
+
+            SendMessage("onLanguageUpdated", SendMessageOptions.DontRequireReceiver); // for compatibility with old code, can be removed later
         }
 
 
@@ -62,7 +64,7 @@ namespace EasyLibs
             if (m_init)
                 return;
 
-            m_text = GetComponent<TextMeshProUGUI>();
+            m_text = GetComponent<TextMeshPro>();
 
             m_defaultFontSize = m_text.fontSize;
             m_defaultFontSizeMin = m_text.fontSizeMin;

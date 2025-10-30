@@ -32,6 +32,16 @@ namespace EasyLibs
             reset();
         }
 
+        public void Reset()
+        {
+            m_curIndex = 0;
+            m_timer = 0;
+
+            m_image.sprite = m_anim.m_frames[0];
+
+            m_playing = false;
+        }
+
         void Update()
         {
             if (!m_playing)
@@ -64,6 +74,7 @@ namespace EasyLibs
                 }
             }
         }
+
 
         void reset()
         {

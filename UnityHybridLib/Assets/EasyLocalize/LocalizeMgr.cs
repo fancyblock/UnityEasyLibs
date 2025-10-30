@@ -75,7 +75,23 @@ namespace EasyLibs
 
         public string GetText(string key)
         {
-            return m_languageTextDic[key][m_curLanguageIndex];
+            string tex = "";
+
+            try
+            {
+                tex = m_languageTextDic[key][m_curLanguageIndex];
+            }
+            catch (System.Exception)
+            {
+                Debug.LogError($"Localize text for key '{key}' not found for language index {m_curLanguageIndex}.");
+            }
+
+            return tex;
+        }
+
+        public string GetText(string key, int languageIndex)
+        {
+            return m_languageTextDic[key][languageIndex];
         }
 
         public SLocalizeImage GetLocalizeImage(string key)

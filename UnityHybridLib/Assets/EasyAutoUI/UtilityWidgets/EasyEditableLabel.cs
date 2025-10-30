@@ -44,9 +44,8 @@ namespace EasyLibs
                 m_noEditGo?.SetActive(false);
             m_inputField.gameObject.SetActive(true);
 
-            m_inputField.text = m_text.text;
-
             m_inputField.ActivateInputField();
+            m_inputField.SetTextWithoutNotify(m_text.text);
         }
 
         public string TEXT
