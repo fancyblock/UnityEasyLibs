@@ -48,7 +48,7 @@ namespace EasyLibs
         [MenuItem("EasyLibs/Convert to UTF-8")]
         static public void OnConvertSource2Utf8()
         {
-            string folderPath = "Assets/Game/Script";
+            string folderPath = "Assets/Game";
             string[] guids = AssetDatabase.FindAssets("t:script", new string[] { folderPath });
 
             Debug.Log(guids.Length);

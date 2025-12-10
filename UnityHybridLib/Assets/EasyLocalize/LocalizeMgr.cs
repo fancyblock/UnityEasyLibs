@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace EasyLibs
 {
@@ -27,7 +29,7 @@ namespace EasyLibs
 
             m_curLanguageIndex = index;
 
-            Util.Log($"LocalizeMgr init done.");
+            Util.Log($"LocalizeMgr init done.", Util.eColor.green);
         }
 
         public void AddWidget(ILocalizeWidget widget)
@@ -75,18 +77,37 @@ namespace EasyLibs
 
         public string GetText(string key)
         {
-            string tex = "";
+            string txt = "";
 
             try
             {
-                tex = m_languageTextDic[key][m_curLanguageIndex];
+                if (key.Contains('[') && key.Contains(']'))
+                {
+                    var matches = Regex.Matches(key, "\\[([^\\]]+)\\]");
+
+                    Assert.IsTrue(matches.Count == 1, $"Localize key param error: {key}");
+
+                    var match = matches[0];
+
+                    string paramStr = match.Groups[1].Value;
+                    string realKey = key.Replace(match.Value, "");
+
+                    txt = m_languageTextDic[realKey][m_curLanguageIndex];
+                    txt = System.Text.RegularExpressions.Regex.Unescape(txt);
+                    txt = string.Format(txt, paramStr);
+                }
+                else
+                {
+                    txt = m_languageTextDic[key][m_curLanguageIndex];
+                    txt = System.Text.RegularExpressions.Regex.Unescape(txt);
+                }
             }
             catch (System.Exception)
             {
                 Debug.LogError($"Localize text for key '{key}' not found for language index {m_curLanguageIndex}.");
             }
 
-            return tex;
+            return txt;
         }
 
         public string GetText(string key, int languageIndex)
