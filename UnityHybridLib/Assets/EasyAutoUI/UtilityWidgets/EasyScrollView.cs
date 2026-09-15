@@ -25,6 +25,11 @@ namespace EasyLibs
         public event Action<int, GameObject> ON_ITEM_FILL;
 
         [SerializeField] protected GameObject m_itemPrefab;
+        
+#if UNITY_EDITOR
+        public GameObject ItemPrefab => m_itemPrefab;
+#endif
+        
         [SerializeField] protected GameObject m_fixedItemPrefab;
         [SerializeField] protected Vector2 m_itemSize;
         [SerializeField] protected Vector2 m_itemInterval;
@@ -369,13 +374,15 @@ namespace EasyLibs
                 pageIndeies.Add(index);
             }
 
-            foreach (int oldIndex in m_currentPageIndeies.Except<int>(pageIndeies))
+            var oldIndexes = new List<int>( m_currentPageIndeies.Except<int>(pageIndeies) );
+            foreach (int oldIndex in oldIndexes)
             {
                 recycleItem(m_itemDic[oldIndex]);
                 m_itemDic.Remove(oldIndex);
             }
 
-            foreach (int newIndex in pageIndeies.Except<int>(m_currentPageIndeies))
+            var newIndexes = new List<int>( pageIndeies.Except<int>(m_currentPageIndeies) );
+            foreach (int newIndex in newIndexes)
             {
                 GameObject itemGo = allocItem(newIndex);
                 itemGo.transform.localPosition = getItemPosition(newIndex);
@@ -418,7 +425,7 @@ namespace EasyLibs
         {
             if (m_fixedItemType != eFixedItem.none && item == m_fixedItemGo)
             {
-                item.SetActive(false);
+                // item.SetActive(false);
             }
             else
             {

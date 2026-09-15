@@ -26,14 +26,18 @@ namespace EasyLibs
         [Conditional("ENABLE_LOGS")]
         static public void Log(string info, eColor color = eColor.grey)
         {
+#if UNITY_EDITOR
             if (color == eColor.grey)
             {
-                UnityEngine.Debug.Log(info);
+                UnityEngine.Debug.Log($"{info}");
             }
             else
             {
                 UnityEngine.Debug.Log($"<color={color.ToString()}>{info}</color>");
             }
+#else
+            UnityEngine.Debug.Log($"[{DateTime.Now:HH:mm:ss.fff}] {info}");
+#endif
         }
 
         static public void SetLayer(GameObject go, int layer)
@@ -369,11 +373,16 @@ namespace EasyLibs
         {
             List<string> list = new List<string>();
 
-            string[] strs = str.Split(split);
-
-            foreach(var s in strs)
+            if (!str.Contains(split))
             {
-                list.Add(s);
+                list.Add(str);
+            }
+            else
+            {
+                string[] strs = str.Split(split);
+
+                foreach (var s in strs)
+                    list.Add(s);
             }
 
             return list;
@@ -409,11 +418,7 @@ namespace EasyLibs
         public static string ReplaceAllString(string rawStr, string pattern, string newStr)
         {
             string result = rawStr;
-
-            while(result.Contains(pattern))
-            {
-                result = result.Replace(pattern, newStr);
-            }
+            result = result.Replace(pattern, newStr);
 
             return result;
         }
@@ -464,7 +469,10 @@ namespace EasyLibs
             int clippedHeight = maxY - minY + 1;
 
             if (clippedWidth <= 0 || clippedHeight <= 0)
+            {
+                UnityEngine.Object.Destroy(original);
                 return null;
+            }
 
             Texture2D clippedTexture = new Texture2D(clippedWidth, clippedHeight);
 
@@ -479,6 +487,8 @@ namespace EasyLibs
             }
 
             clippedTexture.Apply();
+
+            UnityEngine.Object.Destroy(original);
 
             return clippedTexture;
         }

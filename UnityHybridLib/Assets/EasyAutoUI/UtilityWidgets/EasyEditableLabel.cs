@@ -48,6 +48,11 @@ namespace EasyLibs
             m_inputField.SetTextWithoutNotify(m_text.text);
         }
 
+        public bool IsEditActive()
+        {
+            return m_inputField.gameObject.activeSelf;
+        }
+
         public string TEXT
         {
             get

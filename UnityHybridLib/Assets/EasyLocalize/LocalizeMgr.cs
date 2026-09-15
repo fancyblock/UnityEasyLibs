@@ -150,5 +150,17 @@ namespace EasyLibs
 
             return sp;
         }
+
+        public void AddTempText(string key, string textSC, string textTC, string textEN)
+        {
+            if(m_languageTextDic.ContainsKey(key))
+            {
+                Util.Log($"Key {key} already exist.");
+            }
+            else
+            {
+                m_languageTextDic.Add(key, new List<string> { textSC, textTC, textEN });
+            }
+        }
     }
 }

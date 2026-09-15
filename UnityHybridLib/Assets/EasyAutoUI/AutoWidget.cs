@@ -15,6 +15,7 @@ namespace EasyLibs
         private Action m_buttonEvent;
         private Action<string> m_buttonEventWithParam;
         private bool m_buttonInited = false;
+        private Func<bool> m_canBtnExecute = null;
 
         private EventTrigger m_trigger = null;
         private Action m_triggerEvent;
@@ -154,6 +155,11 @@ namespace EasyLibs
             m_button.interactable = enable;
         }
 
+        public void SetButtonCanExecute(Func<bool> func)
+        {
+            m_canBtnExecute = func;
+        }
+
         /// <summary>
         /// 设置按钮回调事件
         /// </summary>
@@ -243,16 +249,19 @@ namespace EasyLibs
                 if (m_buttonClkHook != null)
                     m_buttonClkHook(gameObject.name);
 
-                if (m_buttonEvent != null)
+                if (m_canBtnExecute == null || m_canBtnExecute())
                 {
-                    m_buttonEvent();
-                    m_parent.LAST_BTN_FRAME = stamp;
-                }
+                    if (m_buttonEvent != null)
+                    {
+                        m_buttonEvent();
+                        m_parent.LAST_BTN_FRAME = stamp;
+                    }
 
-                if (m_buttonEventWithParam != null)
-                {
-                    m_buttonEventWithParam(gameObject.name);
-                    m_parent.LAST_BTN_FRAME = stamp;
+                    if (m_buttonEventWithParam != null)
+                    {
+                        m_buttonEventWithParam(gameObject.name);
+                        m_parent.LAST_BTN_FRAME = stamp;
+                    }
                 }
             }
         }
